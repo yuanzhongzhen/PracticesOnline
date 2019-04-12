@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+    <dimen name="fifteenDp">15dp</dimen>
+    <dimen name="circleRadius">50dp</dimen>
+
+</resources>
