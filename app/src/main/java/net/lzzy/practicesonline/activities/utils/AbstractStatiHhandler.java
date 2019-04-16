@@ -24,8 +24,9 @@ public abstract class AbstractStatiHhandler<T> extends Handler {
     }
 
     /**
-     *处理消息业务逻辑
-     *
-     * **/
+     * 处理消息的业务逻辑
+     * @param mags Message对象
+     * @param t context
+     */
     public abstract void handleMessage(Message mags,T t);
 }
