@@ -92,7 +92,7 @@ public class SplashActivity extends BaseActivity implements Sqlashfragment.OnSpl
      } else {
          tvCount = findViewById(R.id.activity_splash_count_down);
          ThreadPoolExecutor executor = AppUtils.getExecutor();
-         //倒计时线程
+         //倒计时线程1
          executor.execute(this::countDown);
          /*executor.execute(this::probeServer);*/
          executor.execute(this::detectServerStatus);
