@@ -1,12 +1,25 @@
 package net.lzzy.practicesonline.activities.models;
 
+import net.lzzy.sqllib.Ignored;
+import net.lzzy.sqllib.Sqlitable;
+
 import java.util.Date;
 
 /**
  * Created by lzzy_gxy on 2019/4/16.
  * Description:
  */
-public class Practice extends BaseEntity {
+public class Practice extends BaseEntity implements Sqlitable {
+  @Ignored
+   public static final String COL_NAME="name";
+ @Ignored
+  public static final String  COL_OUTLINES="outkines";
+   public static final String  COL_API_ID="outlines";
+    @Override
+    public boolean needUpdate(){
+        return false;
+    }
+
     public String getName() {
         return name;
     }
