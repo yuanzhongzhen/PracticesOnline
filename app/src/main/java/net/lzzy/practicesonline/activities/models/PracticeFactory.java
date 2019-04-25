@@ -56,7 +56,6 @@ public class PracticeFactory {
     public  boolean add(Practice practice){
         if (isPracticesInDb(practice)){
             return false;
-
         }
         repository.insert(practice);
         return  true;

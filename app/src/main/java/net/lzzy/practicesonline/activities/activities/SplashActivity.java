@@ -89,9 +89,9 @@ public class SplashActivity extends BaseActivity implements Sqlashfragment.OnSpl
          ThreadPoolExecutor executor = AppUtils.getExecutor();
          //倒计时线程1
          executor.execute(this::countDown);
-         /*executor.execute(this::probeServer);*/
+
          executor.execute(this::detectServerStatus);
-         //endregio
+
      }
  }
      private void detectServerStatus(){
@@ -124,11 +124,11 @@ public void goToMain(){
      handler.sendEmptyMessage(WHAT_CONT_DONE);
     }
 
- private void getoMain() {
-     startActivity(new Intent(this, PrracticesActivi.class));
-     finish();
+         private void getoMain() {
+             startActivity(new Intent(this, PrracticesActivi.class));
+             finish();
 
- }
+         }
 
 
  @Override

@@ -15,6 +15,8 @@ import net.lzzy.practicesonline.activities.utils.AppUtils;
  */
 public abstract class BaseActivity extends AppCompatActivity {
  /**托管frargent**/
+
+ private Fragment fragment;
  protected FragmentManager fragmentManager=getSupportFragmentManager();
 
     @Override
@@ -24,10 +26,16 @@ public abstract class BaseActivity extends AppCompatActivity {
         setContentView(getLayoutRes());
         AppUtils.addActivity(this);
         FragmentManager manger=getSupportFragmentManager();
-        Fragment fragment =manger.findFragmentById(getContainerId());
+        fragment =manger.findFragmentById(getContainerId());
         if (fragment==null){
-            manger.beginTransaction().add(getContainerId(),createFragent()).commit();
+            fragment=createFragent();
+            manger.beginTransaction().add(getContainerId(),fragment).commit();
         }
+        AppUtils.addActivity(this);
+    }
+
+    protected Fragment getFragment(){
+        return fragment;
     }
     /**
      * 销毁

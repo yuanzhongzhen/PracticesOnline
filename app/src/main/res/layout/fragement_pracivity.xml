@@ -1,10 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/fragement_pracivity_swipe"
+    android:layout_margin="16dp">
+
+ <LinearLayout
+     android:layout_width="match_parent"
+     android:layout_height="match_parent"
+     android:orientation="vertical">
 
     <TextView
-        android:text="111111"
+        android:id="@+id/fragement_pracivity_tv_hint"
+        android:gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-</LinearLayout>
+        android:layout_height="wrap_content"
+        android:text="正在同步...." />
+
+    <TextView
+        android:id="@+id/fragement_pracivity_tv_time"
+        android:gravity="center"
+        android:text="2017.3.12 22:22:22"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <ListView
+            android:id="@+id/fragement_pracivity_lv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@null"
+            android:dividerHeight="10dp"
+            />
+
+        <TextView
+            android:id="@+id/fragement_pracivity_none"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="向下拉刷新数据"
+            />
+       <ListView
+           android:id="@+id/fragement_pracivity_lvc"
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           android:divider="@null"
+           android:dividerHeight="10dp"
+           />
+
+
+    </FrameLayout>
+ </LinearLayout>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

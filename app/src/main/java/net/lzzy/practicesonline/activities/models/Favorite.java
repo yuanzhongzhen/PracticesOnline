@@ -1,5 +1,6 @@
 package net.lzzy.practicesonline.activities.models;
 
+import net.lzzy.sqllib.Ignored;
 import net.lzzy.sqllib.Sqlitable;
 
 import java.util.UUID;
@@ -9,8 +10,11 @@ import java.util.UUID;
  * Description:
  */
 public class Favorite extends BaseEntity implements Sqlitable {
+  @Ignored
    public static final String COL_QUESTION_ID="questionid";
     private UUID questionid;
+    private  int timens;
+    private boolean isDone;
 
     public UUID getQuestionid() {
         return questionid;
@@ -36,8 +40,6 @@ public class Favorite extends BaseEntity implements Sqlitable {
         isDone = done;
     }
 
-    private  int timens;
-    private boolean isDone;
 
     @Override
     public boolean needUpdate() {

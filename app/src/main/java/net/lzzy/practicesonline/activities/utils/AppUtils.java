@@ -153,7 +153,7 @@ public class AppUtils extends Application {
      */
     public static Pair<String,String> loadServerSetting(Context context){
         SharedPreferences spSetting = context.getSharedPreferences(SP_SETTING, MODE_PRIVATE);
-        String ip=spSetting.getString(IP,"10.88.91.102");
+        String ip=spSetting.getString(IP,"10.88.91.103");
         String port=spSetting.getString(PORT,"8888");
         return  new Pair<>(ip,port);
     }

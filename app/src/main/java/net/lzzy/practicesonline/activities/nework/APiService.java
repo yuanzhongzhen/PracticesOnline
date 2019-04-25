@@ -78,41 +78,45 @@ public class APiService {
        }
 
    }
-   private static String okGent(String address, String args, HashMap<String,Object>headers){
-        if (!TextUtils.isEmpty(args)){
-            address=address.concat("?").concat(args);
+   private static String okGent(String address, String args, HashMap<String,Object>headers)throws IOException {
+       if (!TextUtils.isEmpty(args)) {
+           address = address.concat("?").concat(args);
 
-        }
-        Request.Builder builder=new Request.Builder().url(address);
-        if ((headers != null) && headers.size()) {
-            for (Object o : headers.entrySet()) {
-                Map.Entry entry = (Map.Entry) o;
-                String key = entry.getKey().toString();
-                Object val = entry.getValue();
-                if (val instanceof String) {
-                    builder = builder.header(key, val.toString());
+       }
+       Request.Builder builder = new Request.Builder().url(address);
+       if (headers != null && headers.size()>0){
+           for (Object o : headers.entrySet()) {
+               Map.Entry entry = (Map.Entry) o;
+               String key = entry.getKey().toString();
+               Object val = entry.getValue();
+               if (val instanceof String) {
+                   builder = builder.header(key, val.toString());
 
-                } else if (val instanceof List) {
-                    for (String v : (List < String > val)) {
-                        builder = builder.addHeader(key, v);
-                    }
-                }
-            }
+               } else if (val instanceof List) {
+                   for (String v : APiService.<List<String>>cast(val)) {
+                       builder = builder.addHeader(key, v);
+                   }
+               }
+           }
 
-        }
-        Request request =builder.build();
-        try(Response response=CLIENT.newCall(request).execute()) {
-            if (response.isSuccessful()){
-                return  response.body().string();
-            }else {
-                throw new IOException("错误码"+response.code());
-            }
+       }
+       Request request = builder.build();
+       try (Response response = CLIENT.newCall(request).execute()) {
+           if (response.isSuccessful()) {
+               return response.body().string();
+           } else {
+               throw new IOException("错误码" + response.code());
+           }
 
-        }
+       }
 
    }
 
-   public static int okPost(String address,JSONObject json)throws IOException{
+   public static <T> T cast(Object object){
+       return (T) object;
+   }
+
+    public static int okPost(String address,JSONObject json)throws IOException{
        RequestBody body=RequestBody.create(MediaType.parse("application/json; charest_utf-8"),
                json.toString());
         Request request =new Request.Builder()

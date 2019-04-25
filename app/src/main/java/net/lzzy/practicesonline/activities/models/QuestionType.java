@@ -5,7 +5,8 @@ package net.lzzy.practicesonline.activities.models;
  * Description:
  */
 public enum  QuestionType {
-     SINGLE_CHOLCE("单项选择"),MULTI_CHOICE("不锁定"),JUDE("判断");
+    SINGLE_CHOICE("单项选择"),MULTI_CHOICE("不锁定"),JUDE("判断");
+
     private String name;
     QuestionType(String name){
     this.name=name;
@@ -16,7 +17,7 @@ public enum  QuestionType {
    public static  QuestionType getInstatance(int ordina){
         for (QuestionType type:QuestionType.values()){
             if (type.ordinal()==ordina){
-
+                return type;
             }
         }
         return null;

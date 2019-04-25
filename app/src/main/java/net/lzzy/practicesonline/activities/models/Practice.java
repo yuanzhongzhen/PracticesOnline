@@ -1,7 +1,12 @@
 package net.lzzy.practicesonline.activities.models;
 
+import net.lzzy.practicesonline.activities.constants.ApiConnstants;
 import net.lzzy.sqllib.Ignored;
+import net.lzzy.sqllib.Jsonable;
 import net.lzzy.sqllib.Sqlitable;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Date;
 
@@ -9,12 +14,22 @@ import java.util.Date;
  * Created by lzzy_gxy on 2019/4/16.
  * Description:
  */
-public class Practice extends BaseEntity implements Sqlitable {
+public class Practice extends BaseEntity implements Sqlitable, Jsonable {
   @Ignored
    public static final String COL_NAME="name";
  @Ignored
-  public static final String  COL_OUTLINES="outkines";
-   public static final String  COL_API_ID="outlines";
+  public static final String  COL_OUTLINES="outlines";
+  @Ignored
+   public static final String  COL_API_ID="apild";
+
+    private String name;
+    private  int intquestionCount;
+    private Date downtoladDote;
+    private String outlines;
+    private boolean isDownloaded;
+    private int apild;
+    private int questionCount;
+
     @Override
     public boolean needUpdate(){
         return false;
@@ -68,11 +83,26 @@ public class Practice extends BaseEntity implements Sqlitable {
         this.apild = apild;
     }
 
-    private String name;
-    private  int intquestionCount;
-    private Date downtoladDote;
-    private String outlines;
-    private boolean isDownloaded;
-    private int apild;
 
+    public int getQuestionCount() {
+        return questionCount;
+    }
+
+    public void setQuestionCount(int questionCount) {
+        this.questionCount = questionCount;
+    }
+
+    @Override
+    public JSONObject toJson() throws JSONException {
+        return null;
+    }
+
+    @Override
+    public void fromJson(JSONObject json) throws JSONException {
+        apild=json.getInt(ApiConnstants.JSON_PRACTICE_API_ID);
+        name=json.getString(ApiConnstants.JSON_PRACTICE_NAME);
+        outlines=json.getString(ApiConnstants.JSON_PRACTICE_QUTLINES);
+        questionCount=json.getInt(ApiConnstants.JSON_PRACTICE_QUESTION_COUNT);
+            downtoladDote=new Date();
+    }
 }
