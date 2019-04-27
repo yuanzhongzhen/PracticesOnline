@@ -26,7 +26,7 @@ public class SplashActivity extends BaseActivity implements Sqlashfragment.OnSpl
     private int seconds=10;
     private TextView tvCount;
     private boolean isServerOn =true;
-
+/**/
     private SqlashHandler handler=new SqlashHandler(this);
        private static class SqlashHandler extends AbstractStatiHhandler<SplashActivity>{
 
@@ -149,9 +149,10 @@ public void goToMain(){
     }
 
     @Override
-    protected Fragment createFragent() {
-     return new Sqlashfragment();
+    protected Fragment createFragment() {
+        return new Sqlashfragment();
     }
+
 
 
 }
