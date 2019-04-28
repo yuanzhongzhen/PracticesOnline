@@ -43,7 +43,9 @@ public class SplashActivity extends BaseActivity implements Sqlashfragment.OnSpl
                       break;
                   case WHAT_CONT_DONE:
                       if (activity.isServerOn){
-                          activity.getoMain();
+                          if (AppUtils.getContext() instanceof SplashActivity){
+                              activity.getoMain();
+                          }
                       }
                       break;
                   case WHAT_EXCEPTION:

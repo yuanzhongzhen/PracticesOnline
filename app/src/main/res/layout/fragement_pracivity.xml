@@ -44,13 +44,6 @@
             android:layout_height="match_parent"
             android:text="向下拉刷新数据"
             />
-       <ListView
-           android:id="@+id/fragement_pracivity_lvc"
-           android:layout_width="match_parent"
-           android:layout_height="match_parent"
-           android:divider="@null"
-           android:dividerHeight="10dp"
-           />
 
 
     </FrameLayout>

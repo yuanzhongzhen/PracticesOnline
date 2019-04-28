@@ -3,6 +3,7 @@ package net.lzzy.practicesonline.activities.frageents;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Message;
+import android.print.PrinterId;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AbsListView;
@@ -40,6 +41,7 @@ import java.lang.ref.WeakReference;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.ThreadPoolExecutor;
 
 /**
@@ -50,6 +52,8 @@ import java.util.concurrent.ThreadPoolExecutor;
 
     public static final int WHAT_PRACTICE_DONE = 0;
     public static final int WHAT_EXCEPTION = 1;
+    public static final int WHAT_QUESTION_DONE = 2;
+    public static final int WHTA_QUESTION_EXCEPTION = 3;
     private ListView lv;
     private TextView tvNone;
     private SwipeRefreshLayout swipe;
@@ -70,6 +74,8 @@ import java.util.concurrent.ThreadPoolExecutor;
      *
      */
     private static class DownloadHandler extends AbstractStatiHhandler<PracticesFrangmnt> {
+
+
 
         public DownloadHandler(PracticesFrangmnt context) {
             super(context);
@@ -96,6 +102,15 @@ import java.util.concurrent.ThreadPoolExecutor;
                 case WHAT_EXCEPTION:
                     fragment.handlePracticeException(msg.obj.toString());
                     break;
+                case WHAT_QUESTION_DONE:
+                    UUID practiceId=fragment.factory.getPracticeId(msg.arg1);
+                    fragment.seveQuestions(msg.obj.toString(),practiceId);
+                    ViewUtils.dismissProgeress();
+                   break;
+                case WHTA_QUESTION_EXCEPTION:
+                    ViewUtils.dismissProgeress();
+                    Toast.makeText(fragment.getContext(),"下载失败\n"+msg.obj.toString(),
+                            Toast.LENGTH_LONG).show();
                 default:
                     break;
 
@@ -103,6 +118,22 @@ import java.util.concurrent.ThreadPoolExecutor;
             if (msg.what==0){
 
             }
+        }
+    }
+    private void seveQuestions(String json,UUID practiceId){
+        try {
+            List<Question>questions=QuestionService.getQuestions(json,practiceId);
+          factory.saceQuestiongs(questions,practiceId);
+          for (Practice practice:practices){
+              if (practice.getId().equals(practiceId)){
+                  practice.setDownloaded(true);
+              }
+          }
+          adapter.notifyDataSetChanged();
+        }catch (Exception e){
+            Toast.makeText(getContext(),"下载失败\n"+e.getMessage()
+              ,Toast.LENGTH_SHORT).show();
+
         }
     }
 
@@ -115,9 +146,10 @@ import java.util.concurrent.ThreadPoolExecutor;
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            PracticesFrangmnt fragment=this.fragment.get();
+            ViewUtils.showProgress(fragment.get().getContext(),"开始下载题目");
+          /*  PracticesFrangmnt fragment=this.fragment.get();
             fragment.tvTime.setVisibility(View.VISIBLE);
-            fragment.tvHint.setVisibility(View.VISIBLE);
+            fragment.tvHint.setVisibility(View.VISIBLE);*/
 
         }
 
@@ -221,7 +253,7 @@ import java.util.concurrent.ThreadPoolExecutor;
     /**
      * 自定义线程初始化记准备工作 ，与执行线程方法
      */
-    private void downloadPractices() {
+    /*private void downloadPractices() {
         tvTime.setVisibility(View.VISIBLE);
         tvHint.setVisibility(View.VISIBLE);
         executor.execute(()->{
@@ -233,7 +265,7 @@ import java.util.concurrent.ThreadPoolExecutor;
                 handler.handleMessage(handler.obtainMessage(WHAT_EXCEPTION,e.getMessage()));
             }
         });
-    }
+    }*/
 
     private void downloadPracticesAsync(){
         new PracticeDownloader(this).execute();
@@ -357,7 +389,7 @@ import java.util.concurrent.ThreadPoolExecutor;
         }
     }
     private void downloadQuestions(Practice practice){
-        new QuestionDownloader(this,practice).execute();
+        downloadQuestions(practice.getApild());
     }
 
     public void initViews(){
@@ -379,6 +411,26 @@ import java.util.concurrent.ThreadPoolExecutor;
             }
         });
     }
+private void downloadQuestions(int apiId){
+        ViewUtils.showProgress(getContext(),"开始下载项目..");
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                    try {
+                        String json=QuestionService.getQuestionsOfPracticeFromServer(apiId);
+                       Message msg=handler.obtainMessage(WHAT_QUESTION_DONE,json);
+                       msg.arg1=apiId;
+                       handler.sendMessage(msg);
+                    } catch (IOException e) {
+                        handler.sendMessage(handler.obtainMessage(WHTA_QUESTION_EXCEPTION,e.getMessage()));
+
+                }
+
+
+            }
+        });
+
+}
 
     @Override
     public int getLayoutRes() {

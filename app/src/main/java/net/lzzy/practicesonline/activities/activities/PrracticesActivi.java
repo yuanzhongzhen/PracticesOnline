@@ -1,8 +1,12 @@
 package net.lzzy.practicesonline.activities.activities;
 
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.graphics.Color;
+import android.os.Binder;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
@@ -12,6 +16,8 @@ import androidx.fragment.app.Fragment;
 import net.lzzy.practicesonline.R;
 
 import net.lzzy.practicesonline.activities.frageents.PracticesFrangmnt;
+import net.lzzy.practicesonline.activities.models.PracticeFactory;
+import net.lzzy.practicesonline.activities.nework.DetecWebService;
 import net.lzzy.practicesonline.activities.utils.ViewUtils;
 
 /**
@@ -23,10 +29,37 @@ import net.lzzy.practicesonline.activities.utils.ViewUtils;
 public class PrracticesActivi extends BaseActivity implements PracticesFrangmnt.OnPracticeListener{
 
     public static final String EXTRA_PRACTICE_ID = "extrapracticeid";
+    public static final String EXTRA_API_ID="extraApiId";
+    public static final String EXTRA_LOCAL_COUNT="extraLocalCount";
+    private ServiceConnection connection;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        iniViews();
+       connection =new ServiceConnection() {
+
+
+       @Override
+       public void onServiceConnected(ComponentName name, IBinder service) {
+           DetecWebService.DetectWebBinder  binder=(DetecWebService.DetectWebBinder)service;
+           binder.derect();
+
+       }
+
+       @Override
+       public void onServiceDisconnected(ComponentName name) {
+
+       }
+   };
+        int locaLcount= PracticeFactory.getInstance().get().size();
+        Intent intent=new Intent(this,DetecWebService.class);
+        intent.putExtra(EXTRA_LOCAL_COUNT,locaLcount);
+        bindService(intent,connection,BIND_AUTO_CREATE);
+    }
+
+    private void iniViews() {
         SearchView search=findViewById(R.id.bar_title_search);
         search.setQueryHint("请输入关键词搜索");
         //todo:在fragment中实现搜索
@@ -45,7 +78,6 @@ public class PrracticesActivi extends BaseActivity implements PracticesFrangmnt.
         icon.setColorFilter(Color.WHITE);
         icX.setColorFilter(Color.WHITE);
         icG.setColorFilter(Color.WHITE);
-
     }
 
     @Override

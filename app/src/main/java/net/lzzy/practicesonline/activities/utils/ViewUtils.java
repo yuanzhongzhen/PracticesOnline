@@ -2,11 +2,13 @@ package net.lzzy.practicesonline.activities.utils;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Message;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -82,5 +84,21 @@ public class ViewUtils {
          * @param kw 搜索关键词
          * */
         public  abstract void handleQuery(String kw);
+    }
+    private static  AlertDialog dialog;
+    public static void showProgress(Context context ,String message){
+        if (dialog==null){
+            View view =LayoutInflater.from(context).inflate(R.layout.diaog_progerss,null);
+            TextView tv =view.findViewById(R.id.dialog_progress_tv);
+            tv.setText(message);
+            dialog=new AlertDialog.Builder(context).create();
+            dialog.setView(view);
+        }
+        dialog.show();
+    }
+    public static void dismissProgeress(){
+        if (dialog !=null&&dialog.isShowing()){
+            dialog.dismiss();
+        }
     }
 }

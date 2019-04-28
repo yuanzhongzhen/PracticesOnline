@@ -34,6 +34,7 @@ public class AppUtils extends Application {
     private static WeakReference<Context> wContext;
     private static String runningActivity;
 
+
     @Override
     public void onCreate() {
         super.onCreate();

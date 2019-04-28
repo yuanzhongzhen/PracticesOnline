@@ -17,8 +17,10 @@
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.LAUNCHER" />
+
             </intent-filter>
         </activity>
+      <service android:name=".activities.nework.DetecWebService"/>
         <activity android:name=".activities.activities.PrracticesActivi"/>
     </application>
 
