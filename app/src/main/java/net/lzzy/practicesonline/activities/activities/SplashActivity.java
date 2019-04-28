@@ -108,7 +108,7 @@ public class SplashActivity extends BaseActivity implements Sqlashfragment.OnSpl
  }
 public void goToMain(){
     if (AppUtils.getRuningActivity()==this){
-        startActivity(new Intent(this, PrracticesActivi.class));
+        startActivity(new Intent(this, PracticesActivity.class));
         finish();
     }
 }
@@ -127,7 +127,7 @@ public void goToMain(){
     }
 
          private void getoMain() {
-             startActivity(new Intent(this, PrracticesActivi.class));
+             startActivity(new Intent(this, PracticesActivity.class));
              finish();
 
          }

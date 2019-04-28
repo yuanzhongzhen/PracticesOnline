@@ -21,7 +21,7 @@
             </intent-filter>
         </activity>
       <service android:name=".activities.nework.DetecWebService"/>
-        <activity android:name=".activities.activities.PrracticesActivi"/>
+        <activity android:name=".activities.activities.PracticesActivity"/>
     </application>
 
 </manifest>

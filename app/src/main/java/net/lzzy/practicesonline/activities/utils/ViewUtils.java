@@ -96,8 +96,8 @@ public class ViewUtils {
         }
         dialog.show();
     }
-    public static void dismissProgeress(){
-        if (dialog !=null&&dialog.isShowing()){
+    public static void dismissProgress(){
+        if (dialog!=null&&dialog.isShowing()){
             dialog.dismiss();
         }
     }

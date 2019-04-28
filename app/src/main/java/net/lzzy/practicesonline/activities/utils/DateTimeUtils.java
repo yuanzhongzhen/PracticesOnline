@@ -8,8 +8,9 @@ import java.util.Locale;
  * Description:
  */
 public class DateTimeUtils {
-    public static final SimpleDateFormat DATE_ITE_FORMAT=
-            new SimpleDateFormat("yy-MM-dd HH:mm:ss", Locale.CHINA);
+    public static final SimpleDateFormat DATE_TIME_FORMAT=
+            new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
     public static final SimpleDateFormat DATE_FORMAT=
-            new SimpleDateFormat("yyyy-MM-dd");
+            new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA);
+
 }

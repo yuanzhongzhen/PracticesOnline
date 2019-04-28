@@ -4,20 +4,16 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.graphics.Color;
-import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.widget.ImageView;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
-
 import net.lzzy.practicesonline.R;
-
 import net.lzzy.practicesonline.activities.frageents.PracticesFrangmnt;
-import net.lzzy.practicesonline.activities.models.PracticeFactory;
-import net.lzzy.practicesonline.activities.nework.DetecWebService;
+import net.lzzy.practicesonline.activities.models.PracticesFactory;
+import net.lzzy.practicesonline.activities.nework.DetectWebService;
 import net.lzzy.practicesonline.activities.utils.ViewUtils;
 
 /**
@@ -26,40 +22,49 @@ import net.lzzy.practicesonline.activities.utils.ViewUtils;
  * @date 2019/4/16
  * Description:
  */
-public class PrracticesActivi extends BaseActivity implements PracticesFrangmnt.OnPracticeListener{
+public class PracticesActivity extends BaseActivity implements PracticesFrangmnt.OnPracticeListener{
 
-    public static final String EXTRA_PRACTICE_ID = "extrapracticeid";
-    public static final String EXTRA_API_ID="extraApiId";
-    public static final String EXTRA_LOCAL_COUNT="extraLocalCount";
+    public static final String EXTRA_PRACTICE_ID = "practiced";
+    public static final String EXTRA_API_ID = "apiId";
+    public static final String EXTRA_LOCAL_COUNT = "localCount";
+    /**④Activity中创建ServiceConnection*/
     private ServiceConnection connection;
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        iniViews();
-       connection =new ServiceConnection() {
+        initViews();
+        //region⑤Activity中启动Service(bindService/startService)
+        //service 绑定
+        connection =new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName name, IBinder service) {
+                DetectWebService.DetectWebBinder binder= (DetectWebService.DetectWebBinder) service;
+                binder.detect();
+            }
 
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
 
-       @Override
-       public void onServiceConnected(ComponentName name, IBinder service) {
-           DetecWebService.DetectWebBinder  binder=(DetecWebService.DetectWebBinder)service;
-           binder.derect();
-
-       }
-
-       @Override
-       public void onServiceDisconnected(ComponentName name) {
-
-       }
-   };
-        int locaLcount= PracticeFactory.getInstance().get().size();
-        Intent intent=new Intent(this,DetecWebService.class);
-        intent.putExtra(EXTRA_LOCAL_COUNT,locaLcount);
+            }
+        };
+        //读取本地数据库数据
+        int localCount = PracticesFactory.getInstance().get().size();
+        //启动后台服务
+        Intent intent=new Intent(this,DetectWebService.class);
+        intent.putExtra(EXTRA_LOCAL_COUNT,localCount);
         bindService(intent,connection,BIND_AUTO_CREATE);
+        //endregion
     }
 
-    private void iniViews() {
+    /**销毁时结束Service */
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unbindService(connection);
+    }
+
+    private void initViews() {
         SearchView search=findViewById(R.id.bar_title_search);
         search.setQueryHint("请输入关键词搜索");
         //todo:在fragment中实现搜索
@@ -96,9 +101,10 @@ public class PrracticesActivi extends BaseActivity implements PracticesFrangmnt.
     }
 
     @Override
-    public void OnPractice(String practiceId) {
-        Intent intent=new Intent(PrracticesActivi.this,QuestionActivity.class);
+    public void OnPractice(String practiceId,int apiId) {
+        Intent intent=new Intent(PracticesActivity.this,QuestionActivity.class);
         intent.putExtra(EXTRA_PRACTICE_ID,practiceId);
+        intent.putExtra(EXTRA_API_ID,apiId);
         startActivity(intent);
     }
 }

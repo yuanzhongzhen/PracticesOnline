@@ -3,7 +3,6 @@ package net.lzzy.practicesonline.activities.frageents;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Message;
-import android.print.PrinterId;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AbsListView;
@@ -20,14 +19,13 @@ import com.google.android.material.snackbar.Snackbar;
 import net.lzzy.practicesonline.R;
 import net.lzzy.practicesonline.activities.models.Practice;
 
-import net.lzzy.practicesonline.activities.models.PracticeFactory;
-import net.lzzy.practicesonline.activities.models.QuesetionFaceory;
+import net.lzzy.practicesonline.activities.models.PracticesFactory;
 import net.lzzy.practicesonline.activities.models.Question;
 
 import net.lzzy.practicesonline.activities.models.UserCookies;
 
-import net.lzzy.practicesonline.activities.nework.PracticeService;
 
+import net.lzzy.practicesonline.activities.nework.PracticeService;
 import net.lzzy.practicesonline.activities.nework.QuestionService;
 import net.lzzy.practicesonline.activities.utils.AbstractStatiHhandler;
 import net.lzzy.practicesonline.activities.utils.AppUtils;
@@ -47,13 +45,14 @@ import java.util.concurrent.ThreadPoolExecutor;
 /**
  * Created by lzzy_gxy on 2019/4/16.
  * Description:
- */
- public  class PracticesFrangmnt extends BeseFargment {
 
-    public static final int WHAT_PRACTICE_DONE = 0;
-    public static final int WHAT_EXCEPTION = 1;
+ */
+public class PracticesFrangmnt extends BeseFargment {
+
     public static final int WHAT_QUESTION_DONE = 2;
-    public static final int WHTA_QUESTION_EXCEPTION = 3;
+    private static final int WHAT_PRACTICE_DONE = 0;
+    private static final int WHAT_EXCEPTION = 1;
+    public static final int WHAT_QUESTION_EXCEPTION = 3;
     private ListView lv;
     private TextView tvNone;
     private SwipeRefreshLayout swipe;
@@ -61,11 +60,11 @@ import java.util.concurrent.ThreadPoolExecutor;
     private TextView tvTime;
     private List<Practice> practices;
     private GenericAdapter<Practice> adapter;
-    private PracticeFactory factory=PracticeFactory.getInstance();
+    private PracticesFactory factory= PracticesFactory.getInstance();
     private ThreadPoolExecutor executor= AppUtils.getExecutor();
     private boolean isDelete=false;
     private float touchX1;
-    public static final int MIN_DISTANCE = 100;
+    private static final int MIN_DISTANCE = 100;
     private DownloadHandler handler=new DownloadHandler(this);
     private OnPracticeListener listener;
 
@@ -75,9 +74,7 @@ import java.util.concurrent.ThreadPoolExecutor;
      */
     private static class DownloadHandler extends AbstractStatiHhandler<PracticesFrangmnt> {
 
-
-
-        public DownloadHandler(PracticesFrangmnt context) {
+        DownloadHandler(PracticesFrangmnt context) {
             super(context);
         }
 
@@ -85,10 +82,10 @@ import java.util.concurrent.ThreadPoolExecutor;
         public void handleMessage(Message msg, PracticesFrangmnt fragment) {
             switch (msg.what){
                 case WHAT_PRACTICE_DONE:
-                    fragment.tvTime.setText(DateTimeUtils.DATE_ITE_FORMAT.format(new Date()));
-                    UserCookies.getInstance().updateLastRefreehTime();
+                    fragment.tvTime.setText(DateTimeUtils.DATE_TIME_FORMAT.format(new Date()));
+                    UserCookies.getInstance().updateLastRefreshTime();
                     try {
-                        List<Practice> practices=PracticeService.getPractices(msg.obj.toString());
+                        List<Practice> practices= PracticeService.getPractices(msg.obj.toString());
                         for (Practice practice:practices){
                             fragment.adapter.add(practice);
                         }
@@ -103,37 +100,36 @@ import java.util.concurrent.ThreadPoolExecutor;
                     fragment.handlePracticeException(msg.obj.toString());
                     break;
                 case WHAT_QUESTION_DONE:
-                    UUID practiceId=fragment.factory.getPracticeId(msg.arg1);
-                    fragment.seveQuestions(msg.obj.toString(),practiceId);
-                    ViewUtils.dismissProgeress();
-                   break;
-                case WHTA_QUESTION_EXCEPTION:
-                    ViewUtils.dismissProgeress();
-                    Toast.makeText(fragment.getContext(),"下载失败\n"+msg.obj.toString(),
-                            Toast.LENGTH_LONG).show();
+                    UUID practiceId=fragment.factory.getPractices(msg.arg1);
+                    fragment.saveQuestions(msg.obj.toString(), practiceId);
+                    ViewUtils.dismissProgress();
+                    break;
+                case WHAT_QUESTION_EXCEPTION:
+                    ViewUtils.dismissProgress();
+                    Toast.makeText(fragment.getContext(), "下载失败，请重试\n"+msg.obj.toString(),
+                            Toast.LENGTH_SHORT).show();
+
+                    break;
                 default:
                     break;
 
             }
-            if (msg.what==0){
-
-            }
         }
     }
-    private void seveQuestions(String json,UUID practiceId){
-        try {
-            List<Question>questions=QuestionService.getQuestions(json,practiceId);
-          factory.saceQuestiongs(questions,practiceId);
-          for (Practice practice:practices){
-              if (practice.getId().equals(practiceId)){
-                  practice.setDownloaded(true);
-              }
-          }
-          adapter.notifyDataSetChanged();
-        }catch (Exception e){
-            Toast.makeText(getContext(),"下载失败\n"+e.getMessage()
-              ,Toast.LENGTH_SHORT).show();
 
+    private  void saveQuestions(String json, UUID practiceId) {
+        try {
+            List<Question> questions= QuestionService.getQuestions(json,practiceId);
+            factory.saveQuestions(questions,practiceId);
+            for (Practice practice:practices){
+                if (practice.getId().equals(practiceId)){
+                    practice.setDownloaded(true);
+                }
+            }
+            Toast.makeText(getContext(), "下载成功", Toast.LENGTH_SHORT).show();
+            adapter.notifyDataSetChanged();
+        } catch (Exception e) {
+            Toast.makeText(getContext(), "下载失败，请重试", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -146,17 +142,16 @@ import java.util.concurrent.ThreadPoolExecutor;
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            ViewUtils.showProgress(fragment.get().getContext(),"开始下载题目");
-          /*  PracticesFrangmnt fragment=this.fragment.get();
+            PracticesFrangmnt fragment=this.fragment.get();
             fragment.tvTime.setVisibility(View.VISIBLE);
-            fragment.tvHint.setVisibility(View.VISIBLE);*/
+            fragment.tvHint.setVisibility(View.VISIBLE);
 
         }
 
         @Override
         protected String doInBackground(Void... voids) {
             try {
-                return PracticeService.getPracticesFrmServer();
+                return PracticeService.getPracticesFromServer();
 
             } catch (IOException e) {
                 return e.getMessage();
@@ -168,7 +163,7 @@ import java.util.concurrent.ThreadPoolExecutor;
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             PracticesFrangmnt fragment=this.fragment.get();
-            fragment.tvTime.setText(DateTimeUtils.DATE_ITE_FORMAT.format(new Date()));
+            fragment.tvTime.setText(DateTimeUtils.DATE_TIME_FORMAT.format(new Date()));
             try {
                 List<Practice> practices=PracticeService.getPractices(s);
                 for (Practice practice:practices){
@@ -182,6 +177,7 @@ import java.util.concurrent.ThreadPoolExecutor;
             }
         }
     }
+
     private static class QuestionDownloader extends AsyncTask<Void,Void,String>{
         WeakReference<PracticesFrangmnt> fragment;
         Practice practice;
@@ -193,6 +189,7 @@ import java.util.concurrent.ThreadPoolExecutor;
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            ViewUtils.showProgress(fragment.get().getContext(),"正在下载题目...");
 
         }
 
@@ -208,20 +205,8 @@ import java.util.concurrent.ThreadPoolExecutor;
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            PracticesFrangmnt fragment=this.fragment.get();
-            QuesetionFaceory factory=QuesetionFaceory.getInstance();
-            try {
-                List<Question> questions=QuestionService.getQuestions(s,practice.getId());
-                for (Question question:questions){
-                    factory.insert(question);
-                }
-                practice.setDownloaded(true);
-                Toast.makeText(fragment.getContext(), "下载成功", Toast.LENGTH_SHORT).show();
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-
-
+            fragment.get().saveQuestions(s,practice.getId());
+            ViewUtils.dismissProgress();
         }
     }
 
@@ -253,20 +238,20 @@ import java.util.concurrent.ThreadPoolExecutor;
     /**
      * 自定义线程初始化记准备工作 ，与执行线程方法
      */
-    /*private void downloadPractices() {
+    private void downloadPractices() {
         tvTime.setVisibility(View.VISIBLE);
         tvHint.setVisibility(View.VISIBLE);
         executor.execute(()->{
             try {
-                String json= PracticeService.getPracticesFrmServer();
-                handler.handleMessage(handler.obtainMessage(WHAT_PRACTICE_DONE,json));
+                String json= PracticeService.getPracticesFromServer();
+                handler.sendMessage(handler.obtainMessage(WHAT_PRACTICE_DONE,json));
             } catch (IOException e) {
                 e.printStackTrace();
-                handler.handleMessage(handler.obtainMessage(WHAT_EXCEPTION,e.getMessage()));
+                handler.sendMessage(handler.obtainMessage(WHAT_EXCEPTION,e.getMessage()));
             }
         });
-    }*/
-
+    }
+    /**异步线程同步*/
     private void downloadPracticesAsync(){
         new PracticeDownloader(this).execute();
     }
@@ -340,12 +325,12 @@ import java.util.concurrent.ThreadPoolExecutor;
 
             @Override
             public boolean persistInsert(Practice practice) {
-                return factory.add(practice);
+                return factory.addPractices(practice);
             }
 
             @Override
             public boolean persistDelete(Practice practice) {
-                return factory.deletePracticeAndRelated(practice);
+                return factory.deletePracticesAndRelated(practice);
             }
         };
         lv.setAdapter(adapter);
@@ -378,18 +363,36 @@ import java.util.concurrent.ThreadPoolExecutor;
     }
 
     private void performItemClick(Practice practice) {
-        if (practice.isDownloaded()){
-            listener.OnPractice(practice.getId().toString());
+        if (practice.isDownloaded()&&listener!=null){
+            listener.OnPractice(practice.getId().toString(),practice.getApild());
         }else {
             new AlertDialog.Builder(getContext())
                     .setMessage("下载该章节题目吗？")
-                    .setPositiveButton("下载",(dialog, which) -> downloadQuestions(practice))
+                    .setPositiveButton("下载",(dialog, which) -> downloadQuestionsAsync(practice))
                     .setNeutralButton("取消",null)
                     .show();
         }
     }
-    private void downloadQuestions(Practice practice){
-        downloadQuestions(practice.getApild());
+
+    /**异步线程下载*/
+    private void downloadQuestionsAsync(Practice practice){
+        new QuestionDownloader(this,practice).execute();
+    }
+
+    private void downloadQuestions(int apiId){
+        ViewUtils.showProgress(getContext(),"开始下载题目...");
+        executor.execute(()->{
+            try {
+                String json= QuestionService.getQuestionsOfPracticeFromServer(apiId);
+                Message msg=handler.obtainMessage(WHAT_QUESTION_DONE,json);
+                msg.arg1=apiId;
+                handler.sendMessage(msg);
+            } catch (IOException e) {
+                e.printStackTrace();
+                handler.sendMessage(handler.obtainMessage(WHAT_QUESTION_EXCEPTION,e.getMessage()));
+            }
+        });
+
     }
 
     public void initViews(){
@@ -399,7 +402,7 @@ import java.util.concurrent.ThreadPoolExecutor;
         swipe = find(R.id.fragement_pracivity_swipe);
         tvHint = find(R.id.fragement_pracivity_tv_hint);
         tvTime = find(R.id.fragement_pracivity_tv_time);
-        tvTime.setText(UserCookies.getInstance().gteLastRefreshTime());
+        tvTime.setText(UserCookies.getInstance().getLastRefreshTime());
         tvHint.setVisibility(View.GONE);
         tvTime.setVisibility(View.GONE);
         find(R.id.fragement_pracivity_lv).setOnTouchListener(new View.OnTouchListener() {
@@ -411,26 +414,6 @@ import java.util.concurrent.ThreadPoolExecutor;
             }
         });
     }
-private void downloadQuestions(int apiId){
-        ViewUtils.showProgress(getContext(),"开始下载项目..");
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                    try {
-                        String json=QuestionService.getQuestionsOfPracticeFromServer(apiId);
-                       Message msg=handler.obtainMessage(WHAT_QUESTION_DONE,json);
-                       msg.arg1=apiId;
-                       handler.sendMessage(msg);
-                    } catch (IOException e) {
-                        handler.sendMessage(handler.obtainMessage(WHTA_QUESTION_EXCEPTION,e.getMessage()));
-
-                }
-
-
-            }
-        });
-
-}
 
     @Override
     public int getLayoutRes() {
@@ -443,7 +426,7 @@ private void downloadQuestions(int apiId){
         if (kw.isEmpty()){
             practices.addAll(factory.get());
         }else {
-            practices.addAll(factory.search(kw));
+            practices.addAll(factory.searchPractices(kw));
         }
         adapter.notifyDataSetChanged();
     }
@@ -469,6 +452,6 @@ private void downloadQuestions(int apiId){
      */
     public interface OnPracticeListener{
 
-        void OnPractice(String practiceId);
+        void OnPractice(String practiceId,int apiId);
     }
 }
