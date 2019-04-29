@@ -1,5 +1,6 @@
 package net.lzzy.practicesonline.activities.frageents;
 
+import android.app.NotificationManager;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Message;
@@ -25,6 +26,7 @@ import net.lzzy.practicesonline.activities.models.Question;
 import net.lzzy.practicesonline.activities.models.UserCookies;
 
 
+import net.lzzy.practicesonline.activities.nework.DetectWebService;
 import net.lzzy.practicesonline.activities.nework.PracticeService;
 import net.lzzy.practicesonline.activities.nework.QuestionService;
 import net.lzzy.practicesonline.activities.utils.AbstractStatiHhandler;
@@ -39,6 +41,7 @@ import java.lang.ref.WeakReference;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.ThreadPoolExecutor;
 
@@ -116,7 +119,11 @@ public class PracticesFrangmnt extends BeseFargment {
             }
         }
     }
+        public void startRefresh(){
+        swipe.setRefreshing(true);
+        refreshListener.onRefresh();
 
+}
     private  void saveQuestions(String json, UUID practiceId) {
         try {
             List<Question> questions= QuestionService.getQuestions(json,practiceId);
@@ -224,7 +231,15 @@ public class PracticesFrangmnt extends BeseFargment {
         swipe.setRefreshing(false);
         tvTime.setVisibility(View.GONE);
         tvHint.setVisibility(View.GONE);
+        NotificationManager manager=(NotificationManager) Objects.requireNonNull(getContext())
+                .getSystemService(Context.NOTIFICATION_SERVICE);
+        if (manager!=null){
+            manager.cancel(DetectWebService.NOTIFICATION_DETECT_ID);
+        }
+
     }
+
+
 
     @Override
     protected void populate() {
@@ -233,6 +248,7 @@ public class PracticesFrangmnt extends BeseFargment {
         initSWipe();
     }
     private SwipeRefreshLayout.OnRefreshListener refreshListener= this::downloadPracticesAsync;
+
 
 
     /**
@@ -394,6 +410,7 @@ public class PracticesFrangmnt extends BeseFargment {
         });
 
     }
+
 
     public void initViews(){
         lv = find(R.id.fragement_pracivity_lv);

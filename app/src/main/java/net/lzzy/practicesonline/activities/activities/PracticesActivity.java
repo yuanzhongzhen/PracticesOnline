@@ -8,12 +8,14 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.widget.ImageView;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import net.lzzy.practicesonline.R;
 import net.lzzy.practicesonline.activities.frageents.PracticesFrangmnt;
 import net.lzzy.practicesonline.activities.models.PracticesFactory;
 import net.lzzy.practicesonline.activities.nework.DetectWebService;
+import net.lzzy.practicesonline.activities.utils.AppUtils;
 import net.lzzy.practicesonline.activities.utils.ViewUtils;
 
 /**
@@ -29,11 +31,16 @@ public class PracticesActivity extends BaseActivity implements PracticesFrangmnt
     public static final String EXTRA_LOCAL_COUNT = "localCount";
     /**④Activity中创建ServiceConnection*/
     private ServiceConnection connection;
+    private boolean refresh=false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initViews();
+       if (getIntent()!=null){
+          refresh=getIntent().getBooleanExtra(DetectWebService.EXTRA_REFRSH,false);
+       }
+
         //region⑤Activity中启动Service(bindService/startService)
         //service 绑定
         connection =new ServiceConnection() {
@@ -55,6 +62,24 @@ public class PracticesActivity extends BaseActivity implements PracticesFrangmnt
         intent.putExtra(EXTRA_LOCAL_COUNT,localCount);
         bindService(intent,connection,BIND_AUTO_CREATE);
         //endregion
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (refresh){
+            ((PracticesFrangmnt)getFragment()).startRefresh();
+
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+       new  AlertDialog.Builder(this)
+               .setMessage("退出应用吗？")
+               .setPositiveButton("退出",(dialog, which) -> AppUtils.exit())
+               .show();
+
     }
 
     /**销毁时结束Service */

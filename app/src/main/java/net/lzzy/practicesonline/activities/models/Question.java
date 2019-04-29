@@ -26,7 +26,7 @@ public class Question extends BaseEntity implements Sqlitable, Jsonable {
     private QuestionType tupe;
     private  int dbType;
     private String analysis;
-    private UUID practiceID;
+
     private UUID practiceId;
     @Ignored
     private  List<Option>options;
@@ -81,13 +81,6 @@ public class Question extends BaseEntity implements Sqlitable, Jsonable {
         this.analysis = analysis;
     }
 
-    public UUID getPracticeID() {
-        return practiceID;
-    }
-
-    public void setPracticeID(UUID practiceID) {
-        this.practiceID = practiceID;
-    }
 
 
 
