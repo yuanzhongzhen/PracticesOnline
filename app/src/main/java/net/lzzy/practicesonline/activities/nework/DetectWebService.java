@@ -19,7 +19,7 @@ import net.lzzy.practicesonline.activities.models.Practice;
 import net.lzzy.practicesonline.activities.utils.AppUtils;
 
 
-;
+
 import java.util.List;
 
 
@@ -47,7 +47,8 @@ public class DetectWebService extends Service {
         return new DetectWebBinder();
     }
 
-    /**
+    /***
+     *
      * ②在服务类中创建Binder类（与Activity通信）
      */
     public class DetectWebBinder extends Binder {
