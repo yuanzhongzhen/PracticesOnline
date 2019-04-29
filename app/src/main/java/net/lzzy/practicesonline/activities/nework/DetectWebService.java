@@ -55,6 +55,7 @@ public class DetectWebService extends Service {
 
 
         /**
+         *
          * ③在Binder类中添加执行后台任务的方法
          */
         public void detect() {
