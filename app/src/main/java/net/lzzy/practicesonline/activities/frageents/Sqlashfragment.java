@@ -1,11 +1,7 @@
 package net.lzzy.practicesonline.activities.frageents;
-
 import android.content.Context;
 import android.view.View;
-
 import net.lzzy.practicesonline.R;
-import net.lzzy.practicesonline.activities.utils.AppUtils;
-
 import java.util.Calendar;
 
 /**

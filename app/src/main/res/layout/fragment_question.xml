@@ -7,18 +7,18 @@
    <LinearLayout
        android:orientation="horizontal"
        android:layout_width="match_parent"
-       android:layout_height="wrap_content"
+       android:layout_height="30dp"
        android:gravity="center_vertical">
+
        <TextView
            android:id="@+id/fragement_question_tv_question_lv"
-           android:layout_width="0dp"
-           android:layout_weight="1"
+           android:layout_width="match_parent"
            android:layout_height="match_parent"
+           android:layout_weight="1"
            android:gravity="center_vertical"
            android:text="3.单项选择题"
-           android:textStyle="bold"
-           />
-       <ImageView
+           android:textStyle="bold" />
+       <ImageButton
            android:id="@+id/fragement_question_img_favorite"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"

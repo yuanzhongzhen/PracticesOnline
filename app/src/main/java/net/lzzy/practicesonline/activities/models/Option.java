@@ -22,6 +22,7 @@ public class Option extends BaseEntity implements Sqlitable, Jsonable {
     private UUID questionid;
     private boolean isAnswer;
     private int apild;
+
     @Override
     public boolean needUpdate(){
         return false;

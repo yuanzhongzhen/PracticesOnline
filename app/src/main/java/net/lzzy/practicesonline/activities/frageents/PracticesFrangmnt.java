@@ -11,21 +11,14 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AlertDialog;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import com.google.android.material.snackbar.Snackbar;
-
 import net.lzzy.practicesonline.R;
 import net.lzzy.practicesonline.activities.models.Practice;
-
 import net.lzzy.practicesonline.activities.models.PracticesFactory;
 import net.lzzy.practicesonline.activities.models.Question;
-
 import net.lzzy.practicesonline.activities.models.UserCookies;
-
-
 import net.lzzy.practicesonline.activities.nework.DetectWebService;
 import net.lzzy.practicesonline.activities.nework.PracticeService;
 import net.lzzy.practicesonline.activities.nework.QuestionService;
@@ -35,7 +28,6 @@ import net.lzzy.practicesonline.activities.utils.DateTimeUtils;
 import net.lzzy.practicesonline.activities.utils.ViewUtils;
 import net.lzzy.sqllib.GenericAdapter;
 import net.lzzy.sqllib.ViewHolder;
-
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.Collections;

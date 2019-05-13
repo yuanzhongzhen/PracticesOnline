@@ -2,6 +2,7 @@ package net.lzzy.practicesonline.activities.nework;
 
 import net.lzzy.practicesonline.activities.constants.ApiConnstants;
 import net.lzzy.practicesonline.activities.models.Practice;
+import net.lzzy.practicesonline.activities.models.view.PracticeResult;
 import net.lzzy.sqllib.JsonConverter;
 
 import org.json.JSONException;
@@ -22,5 +23,7 @@ public class PracticeService {
         JsonConverter<Practice> converter=new JsonConverter<>(Practice.class);
         return converter.getArray(json);
     }
-
+     public static int poseResult(PracticeResult practiceResult)throws JSONException ,IOException{
+            return ApiService.okPost(ApiConnstants.URL_QUESTIONSS,practiceResult.toJson());
+      }
 }

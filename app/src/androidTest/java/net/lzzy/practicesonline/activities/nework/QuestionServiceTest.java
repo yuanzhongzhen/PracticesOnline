@@ -1,7 +1,7 @@
 package net.lzzy.practicesonline.activities.nework;
 
 import net.lzzy.practicesonline.activities.models.Question;
-import net.lzzy.practicesonline.activities.models.QuestionType;
+import net.lzzy.practicesonline.activities.models.view.QuestionType;
 
 import org.json.JSONException;
 import org.junit.Test;

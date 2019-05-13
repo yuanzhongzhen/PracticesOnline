@@ -52,5 +52,19 @@ public static final String JSON_QUESTION_ANALYSIS = "Analysis";
     public static final String JSON_OPTION_LABEL="Label";
     public static final String JSON_OPTION__ID="Id";
 
+/**
+ * 提交结果
+ * **/
+    private static final String ACTION_QUESTIONS="/api/result/PracticeResul";
+
+    public static final String URL_QUESTIONSS=URL_API.concat(ACTION_QUESTIONS);
+    /**
+     * PraticeResult字段
+     */
+    public static final String JSON_RESULT_API_ID = "PracticeID";
+    public static final String JSON_RESULT_PRACTICE_ID = "PracticeID";
+    public static final String JSON_RESULT_SCRORE_RATIO = "ScroreRatio";
+    public static final String JSON_RESULT_WRONG_QUESTION_IDS = "WrongQuestionIds";
+    public static final String JSON_RESULT_PHONE_NO = "PhoneNo";
 
 }

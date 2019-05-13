@@ -1,6 +1,7 @@
 package net.lzzy.practicesonline.activities.models;
 
 import net.lzzy.practicesonline.activities.constants.ApiConnstants;
+import net.lzzy.practicesonline.activities.models.view.QuestionType;
 import net.lzzy.practicesonline.activities.nework.QuestionService;
 import net.lzzy.sqllib.Ignored;
 import net.lzzy.sqllib.Jsonable;
@@ -9,10 +10,7 @@ import net.lzzy.sqllib.Sqlitable;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Type;
-import java.security.cert.PKIXRevocationChecker;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 /**

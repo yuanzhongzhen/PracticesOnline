@@ -23,6 +23,7 @@
       <service android:name=".activities.nework.DetectWebService"/>
         <activity android:name=".activities.activities.PracticesActivity"/>
         <activity android:name=".activities.activities.QuestionActivity"/>
+          <activity android:name=".activities.activities.ResultActivity"/>
     </application>
 
 </manifest>
