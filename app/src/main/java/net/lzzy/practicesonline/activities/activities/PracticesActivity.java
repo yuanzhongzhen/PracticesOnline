@@ -1,5 +1,4 @@
 package net.lzzy.practicesonline.activities.activities;
-
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;

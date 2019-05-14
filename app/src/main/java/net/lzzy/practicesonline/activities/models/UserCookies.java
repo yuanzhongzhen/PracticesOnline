@@ -63,7 +63,7 @@ public class UserCookies {
      return  result==FLAG_COMMIT_Y;
   }
     public void commitPrantice(String practiceId){
-        spPostion.edit().putInt(practiceId,FLAG_COMMIT_Y);
+       spCommit.edit().putInt(practiceId,FLAG_COMMIT_Y).apply();
  }
     public void upadteCurrentQuestion(String practiceId,int pos){
       spPostion.edit().putInt(practiceId,pos).apply();
@@ -164,7 +164,7 @@ public class UserCookies {
       }else if (extra){
           return new  Pair<>(false,WrongType.EXTRA_POTIONS);
       }else {
-          return  new Pair<>(false,WrongType.RIGHT_OPTIONS);
+          return  new Pair<>(true,WrongType.RIGHT_OPTIONS);
       }
   }
   private WrongType getWrongType(String checkedIds,Question question){

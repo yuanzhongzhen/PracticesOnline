@@ -7,9 +7,7 @@ import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
 import java.util.Objects;
-
 /**
  * Created by lzzy_gxy on 2019/3/27.
  * Description:

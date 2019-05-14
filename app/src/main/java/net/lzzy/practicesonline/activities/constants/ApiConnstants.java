@@ -1,6 +1,4 @@
 package net.lzzy.practicesonline.activities.constants;
-
-
 import net.lzzy.practicesonline.activities.utils.AppUtils;
 
 public class ApiConnstants {

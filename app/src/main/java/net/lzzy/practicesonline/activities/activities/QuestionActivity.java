@@ -8,7 +8,6 @@ import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,9 +30,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 public class QuestionActivity extends AppCompatActivity {
-    private static  final String EXTRA_PRACTICE_ID="extraPracticeId";
-    private static final String EXTRA_RESU="extraResult";
-    private static final int REQUEST_CODE_RESULT=0;
+    public static  final String EXTRA_PRACTICE_ID="extraPracticeId";
+    public static final String EXTRA_RESU="extraResult";
+    public static final int REQUEST_CODE_RESULT=0;
   private String practiceId;
   private int apiId;
   private List<Question>questions;
@@ -189,6 +188,7 @@ public class QuestionActivity extends AppCompatActivity {
    tvCommit=findViewById(R.id.activity_question_tv_commit);
    tvHint=findViewById(R.id.activitu_question_hint);
    pager=findViewById(R.id.activitu_question_pager);
+   isCommitted=UserCookies.getInstance().isPracticeCommitted(practiceId);
    if (isCommitted){
        tvCommit.setVisibility(View.GONE);
        tvView.setVisibility(View.VISIBLE);

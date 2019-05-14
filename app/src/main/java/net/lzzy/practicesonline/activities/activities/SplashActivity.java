@@ -14,7 +14,6 @@ import net.lzzy.practicesonline.activities.frageents.Sqlashfragment;
 import net.lzzy.practicesonline.activities.utils.AbstractStatiHhandler;
 import net.lzzy.practicesonline.activities.utils.AppUtils;
 import net.lzzy.practicesonline.activities.utils.ViewUtils;
-
 import java.util.Objects;
 import java.util.concurrent.ThreadPoolExecutor;
 

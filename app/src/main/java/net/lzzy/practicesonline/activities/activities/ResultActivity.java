@@ -1,14 +1,16 @@
 package net.lzzy.practicesonline.activities.activities;
-
 import androidx.fragment.app.Fragment;
-
 import net.lzzy.practicesonline.R;
+import net.lzzy.practicesonline.activities.frageents.GridFragment;
+import net.lzzy.practicesonline.activities.models.view.QuestionResult;
+import java.util.List;
 
 /**
  * Created by lzzy_gxy on 2019/5/13.
  * Description:
  */
 public class ResultActivity extends BaseActivity {
+      private List<QuestionResult>results;
     @Override
     protected int getLayoutRes() {
         return R.layout.activity_result;
@@ -21,6 +23,7 @@ public class ResultActivity extends BaseActivity {
 
     @Override
     protected Fragment createFragment() {
-        return null;
+    results=getIntent().getParcelableArrayListExtra(QuestionActivity.EXTRA_RESU);
+        return GridFragment.Instance(results);
     }
 }
