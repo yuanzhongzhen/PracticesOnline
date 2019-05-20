@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 public class QuestionActivity extends AppCompatActivity {
+    public static final int RESULT_CODE = 3;
     public static  final String EXTRA_PRACTICE_ID="extraPracticeId";
     public static final String EXTRA_RESU="extraResult";
     public static final int REQUEST_CODE_RESULT=0;
@@ -86,10 +87,18 @@ public class QuestionActivity extends AppCompatActivity {
         tvCommit.setOnClickListener(v -> commitPractice());
         tvView.setOnClickListener(v -> redirect());
     }
-
+    /**
+     * 数据回传
+     * **/
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode==REQUEST_CODE_RESULT&&resultCode==RESULT_CODE){
+            int pos=data.getIntExtra(ResultActivity.POSITION,-1);
+            if (pos>=0){
+                pager.setCurrentItem(pos);
+            }
+        }
     }
 
     private void redirect() {

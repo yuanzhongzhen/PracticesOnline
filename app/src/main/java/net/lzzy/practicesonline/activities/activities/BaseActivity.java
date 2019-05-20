@@ -1,4 +1,5 @@
 package net.lzzy.practicesonline.activities.activities;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.Window;
 import androidx.appcompat.app.AppCompatActivity;
@@ -69,5 +70,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onStop();
         AppUtils.setStopped(getLocalClassName());
     }
+
 
 }

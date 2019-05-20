@@ -8,29 +8,27 @@
         android:id="@+id/fragement_grid_count_grid"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:horizontalSpacing="10dp"
-        android:verticalSpacing="10dp"
+        android:horizontalSpacing="5dp"
+        android:verticalSpacing="5dp"
         android:numColumns="5"
-        android:padding="10dp"
+        android:padding="5dp"
         android:gravity="center"
 
         >
 
     </GridView>
 
-        <TextView
-            android:id="@+id/fragement_grid_count_down"
-            android:layout_width="@dimen/circleRadius"
-            android:layout_height="@dimen/circleRadius"
-            android:layout_gravity="end"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="640dp"
-            android:layout_marginEnd="4dp"
-            android:background="@drawable/bg_circle"
-            android:gravity="center"
-            android:text="图"
-            android:textSize="15sp" />
+    <TextView
+        android:id="@+id/fragement_grid_count_down"
+        android:layout_margin="10dp"
+        android:gravity="center"
+        android:layout_gravity="bottom|end"
+        android:background="@drawable/bg_circle"
+        android:layout_height="50dp"
+        android:layout_width="50dp"
+        android:text="图"
+        />
+
 
 
 </FrameLayout>
