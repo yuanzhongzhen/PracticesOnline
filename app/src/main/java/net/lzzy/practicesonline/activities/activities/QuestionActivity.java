@@ -16,6 +16,7 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import net.lzzy.practicesonline.R;
 import net.lzzy.practicesonline.activities.frageents.QuestionFragment;
+import net.lzzy.practicesonline.activities.models.FavoriteFactory;
 import net.lzzy.practicesonline.activities.models.Question;
 import net.lzzy.practicesonline.activities.models.QuestionFactory;
 import net.lzzy.practicesonline.activities.models.UserCookies;
@@ -34,6 +35,7 @@ public class QuestionActivity extends AppCompatActivity {
     public static  final String EXTRA_PRACTICE_ID="extraPracticeId";
     public static final String EXTRA_RESU="extraResult";
     public static final int REQUEST_CODE_RESULT=0;
+    public static final int COLLECT_RESULT_CODE=4;
   private String practiceId;
   private int apiId;
   private List<Question>questions;
@@ -97,6 +99,27 @@ public class QuestionActivity extends AppCompatActivity {
             int pos=data.getIntExtra(ResultActivity.POSITION,-1);
             if (pos>=0){
                 pager.setCurrentItem(pos);
+            }
+        }
+        if (requestCode == REQUEST_CODE_RESULT && resultCode == COLLECT_RESULT_CODE &&data!=null){
+            String pId=data.getStringExtra(ResultActivity.PRACTICE_ID);
+            if (!pId.isEmpty()){
+                List<Question> questionList=new ArrayList<>();
+                FavoriteFactory factory=FavoriteFactory.getInstance();
+                for (Question question:QuestionFactory.getInstance().getByPractices(pId)){
+                    if (factory.isQuestionStearred(question.getId().toString())){
+                        questionList.add(question);
+                    }
+                }
+                questions.clear();
+                questions.addAll(questionList);
+               initDots();
+                adapter.notifyDataSetChanged();
+                if (questions.size()>0){
+                    pager.setCurrentItem(0);
+                    refreshDots(0);
+                }
+
             }
         }
     }

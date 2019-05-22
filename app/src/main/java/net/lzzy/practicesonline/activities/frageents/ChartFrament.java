@@ -49,7 +49,7 @@ public class ChartFrament extends BeseFargment implements View.OnClickListener{
     private static  final String EXTRA_PRACTICE_ID="extraPracticeId";
     private static final String COLOR_CREEN="#7FFF00";
     private static final String COLOR_RED="#D81B60";
-    private static final String COLOR_PRIMARY="00B577";
+    private static final String COLOR_PRIMARY="#90d7ec";
     private static final String COLOR_RECOWN="#00574B";
     private List<QuestionResult>results;
     private ChartKusteber chartKusteber;
@@ -186,6 +186,32 @@ public class ChartFrament extends BeseFargment implements View.OnClickListener{
 
 
     private void displayLineChart() {
+        ValueFormatter formatter=new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                return "Q"+(int)value;
+            }
+        };
+       lineChart.getXAxis().setValueFormatter(formatter);
+        List<Entry> entries=new ArrayList<>();
+        for (int i = 1; i < results.size(); i++) {
+            int readCount = UserCookies.getInstance().
+                    getReadCount(results.get(i).getQuestionId().toString());
+            entries.add(new Entry(i+1, readCount));
+        }
+        LineDataSet dataSet=new LineDataSet(entries,"查看次数");
+        dataSet.setColor(Color.RED);
+        dataSet.setLineWidth(1f);
+        dataSet.setDrawCircleHole(true);
+        dataSet.setCircleColor(Color.YELLOW);
+        dataSet.setValueTextSize(9f);
+        LineData data=new LineData(dataSet);
+        lineChart.setData(data);
+        lineChart.invalidate();
+
+      /* lineChart.getAxis().setValueFormatter(xFormatter);
+        List<Entry>*/
+
 
 
 
@@ -242,20 +268,29 @@ public class ChartFrament extends BeseFargment implements View.OnClickListener{
 
     private void configBarLineChart(BarLineChartBase chart) {
 
-        XAxis xAxis= chart.getXAxis();
+
+
+        XAxis xAxis=chart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setDrawGridLines(false);
         xAxis.setTextSize(8f);
         xAxis.setGranularity(1f);
+
+        /**  Y 轴 **/
         YAxis yAxis=chart.getAxisLeft();
-        yAxis.setLabelCount(3,false);
+        yAxis.setLabelCount(8,false);
         yAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
         yAxis.setTextSize(8f);
         yAxis.setGranularity(1f);
-        yAxis.setAxisMaximum(0);
+        yAxis.setAxisMinimum(0);
+
+        /** chart属性 **/
         chart.getLegend().setEnabled(false);
         chart.getAxisRight().setEnabled(false);
         chart.setPinchZoom(false);
+
+
+
 
     }
 
