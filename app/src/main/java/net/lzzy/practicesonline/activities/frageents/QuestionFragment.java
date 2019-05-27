@@ -19,9 +19,7 @@ import net.lzzy.practicesonline.activities.models.Question;
 import net.lzzy.practicesonline.activities.models.QuestionFactory;
 import net.lzzy.practicesonline.activities.models.view.QuestionType;
 import net.lzzy.practicesonline.activities.models.UserCookies;
-
 import java.util.List;
-
 /**
  * Created by lzzy_gxy on 2019/4/30.
  * Description:
@@ -126,6 +124,7 @@ public class QuestionFragment extends BeseFargment {
       initView();
       adapterVuew();
       gennerateOptions();
+ /*       displayQuestion();*/
 
         /*displayQuestion();*/
     }

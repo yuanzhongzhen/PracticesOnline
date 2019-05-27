@@ -24,6 +24,15 @@ public class Question extends BaseEntity implements Sqlitable, Jsonable {
     private QuestionType tupe;
     private  int dbType;
     private String analysis;
+    private  int order;
+
+    public int getOrder() {
+        return order;
+    }
+
+    public void setOrder(int order) {
+        this.order = order;
+    }
 
     private UUID practiceId;
     @Ignored
@@ -109,7 +118,7 @@ public class Question extends BaseEntity implements Sqlitable, Jsonable {
         }catch (IllegalAccessException|InstantiationException e){
             e.printStackTrace();
         }
-
+         order=json.getInt("Number");
 
     }
 
