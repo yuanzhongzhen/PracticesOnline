@@ -62,7 +62,7 @@ public class ResultActivity extends BaseActivity implements GridFragment.GridKus
     protected int getContainerId() {
         return R.id.activity_result_containe;
     }
-
+/***/
     @Override
     protected Fragment createFragment() {
     results=getIntent().getParcelableArrayListExtra(QuestionActivity.EXTRA_RESU);

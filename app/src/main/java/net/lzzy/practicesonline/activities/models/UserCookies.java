@@ -1,18 +1,11 @@
 package net.lzzy.practicesonline.activities.models;
-
-
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.net.NetworkInfo;
 import android.util.Pair;
-
-import androidx.fragment.app.FragmentStatePagerAdapter;
-
 import net.lzzy.practicesonline.activities.models.view.QuestionResult;
 import net.lzzy.practicesonline.activities.models.view.WrongType;
 import net.lzzy.practicesonline.activities.utils.AppUtils;
 import net.lzzy.practicesonline.activities.utils.DateTimeUtils;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
